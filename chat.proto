@@ -1,0 +1,38 @@
+syntax = "proto3" ;
+package chat; //this package is for the protoc file for referencing data with in these files.
+option  go_package ="go-messenger/chat"; // This line tells package to place in chat directory.
+
+service Chatservice{
+  rpc SenderMessage(SendMessageRequest) returns (SenderMessageResponse); //For sending a chat message.
+  rpc ReceiverMessages (stream ReceiveMessageRequest) returns (ReceiveMessageRespone); //For receiving messages in real-time (using streaming).
+  rpc UserPresence (UserPresenceRequest) returns (UserPresenceResponse); // To check if a user is online or offline.
+}
+
+message SendMessageRequest {
+  string sender = 1 ;
+      string receiver = 2;
+      string message =3 ;
+      int64 timestamp = 4;
+}
+message SenderMessageResponse {
+  bool success =1 ;
+  string message_id =2;
+}
+
+message  ReceiveMessageRequest{
+string user_id =1 ;
+}
+message  ReceiveMessageRespone {
+  string sender = 1;
+  string message = 2;
+  int64 timestamp = 3;
+}
+
+message  UserPresenceRequest{
+  string user_id =1;
+}
+message UserPresenceResponse {
+  bool is_online = 1;
+  int64 last_seen= 2;
+}
+
